@@ -11,23 +11,11 @@ class QuotesSpider(CrawlSpider):
     allowed_domains = [
         'auto.ru',
     ]
-    visited_urls = []
-    cars_urls = []
 
     def parse_item(self, response):
-        if response.url not in self.visited_urls:
-            self.visited_urls.append(response.url)
-            print("!!! " + response.url)
-            # yield response.url
-
-            # a = response.xpath('//div[@class="CardPhone-module__showPhoneText"]').extract()
-            if response.url not in self.cars_urls:
-                self.cars_urls.append(response.url)
-                item = ParserautoItem()
-                item['url'] = response.url
-                yield item
-        else:
-            print('!!!!! CYCLE !!!!!')
+        item = ParserautoItem()
+        item['url'] = response.url
+        yield item
 
     rules = (
         Rule(LinkExtractor(allow=[r'/\d+-\w+/$']), callback='parse_item', follow=False),
